@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+Tutorial:
+https://reactjs.org/tutorial/tutorial.html#setup-option-1-write-code-in-the-browser
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+What I did from the tutorial:
 
-## Available Scripts
+Load react
+* Started by loading the react app in npx, and modifying the files to remove everything in src
+* Created index.css and index.js and copy/pasted some base code into each, the js file pulls in a set of component subclasses and DOM native component (<button>)
+* Loaded the app locally
 
-In the project directory, you can run:
+Pass props, define state, and place state in higher level component
+* Passed data through the props to fill each square with a number
+* Create an onClick event listener, then establish state in squares so that they will render an “X” on click
+* As it is, we have state rendering through individual squares, when we want it to render through the higher tier component, board. 
+* So we change it so that when a square is clicked, it calls the board instead to receive it’s value. This will show errors until handleClick function is added
+* We put in handleClick function to within board to now allow users to fill squares with “X” again. So the button state can either be null or “X”, but not “O” yet.
+* We call .slice() to create a copy of the squares array to modify instead of modifying the existing array. This is called immutability which makes it easier to undo/redo actions, and detect state changes to determine when a component should be re-rendered.
 
-### `npm start`
+Create boolean to allow for multiple players for “X” and “O”, provide feedback to user
+* We add “O” as mark, but ensure that the first player is “X” by creating a boolean that flips each time a player clicks 
+* Now we have null or “X” or “O”!
+* Since players wouldn’t know whose turn it is unless they knew this logic, we show them whose turn it is by changing the render constant string
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Declare winner
+* To show who wins the game, the tutorial provides a helper function with the potential winning values defined in new function called calculateWinner,
+* This is called in the boards render function as an if/else statement. 
+* The winner is defined when the for loop reaches one of the values required, otherwise, the game continues with the next player taking their turn
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Time travel
+* Because have immutable states, we make it easy to revert back to previous steps in the game
+* We store past squares arrays in a new array for our moves, a “history” state
+* We place history in the Game component (which has been largely unused until now) because the history is a state affecting all other components. 
+* So we have to lift up the squares state to the game component instead of board component to control the entirety of the board’s data. 
 
-### `npm test`
+Show past moves
+* We will use the arrays map method to map to other data from our selected buttons to our history display
+* To ensure we can properly map changes, and that react understands what changes are made, we define keys.
+* We will define step numbers that are identified with unique keys
+* Note: this section started to lose me a little bit because of the jumping around in the code we are doing and the new term “keys.” They essentially sound like uniquely generated IDs used for each button so that React knows which button does what and when and doesn’t ever get them mixed up
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+It feels like I did a lot of thinking for not a lot of output but hey it works and I understand React a little better!
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Questions:
+* How does a screen reader know which option is selected and when? Is this accessible?
+* Where is the visible focus state on each button? How do they get passed in with react?
